@@ -3,6 +3,13 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
+    "baseUrl": ".",
+    "paths": {
+      "@services/*": ["src/services/*"],
+      "@workers/*": ["src/workers/*"],
+      "@providers/*": ["src/providers/*"],
+      "@apis/*": ["src/apis/*"]
+    },
     "types": ["node"]
   },
   "include": ["src/**/*.ts"],

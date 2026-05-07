@@ -1,0 +1,24 @@
+import { Router } from "express";
+
+import jobsService from "@services/jobs";
+
+const router = Router();
+
+router.post("/jobs", async (_, res) => {
+  const job = await jobsService.createJob();
+  res.status(201).json(job);
+});
+
+router.get("/jobs/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  const job = await jobsService.getJob(id);
+
+  if (!job) {
+    res.status(404).json({ error: "Job not found" });
+    return;
+  }
+
+  res.json(job);
+});
+
+export default router;
