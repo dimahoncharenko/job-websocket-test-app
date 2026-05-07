@@ -35,13 +35,22 @@ export default (socket: WebSocket) => {
       return;
     }
 
-    await handler(socket, payload);
+    try {
+      await handler(socket, payload);
+    } catch (err) {
+      console.error("Unhandled error in WebSocket handler:", err);
+      socket.send(JSON.stringify({ event: "error", message: "Internal server error" }));
+    }
   });
 
   socket.on("close", async () => {
     socket.abortController?.abort();
     if (socket.activeJobId) {
-      await jobsService.updateJob(socket.activeJobId, { status: "failed" });
+      try {
+        await jobsService.updateJob(socket.activeJobId, { status: "failed" });
+      } catch (err) {
+        console.error("Failed to mark job as failed on socket close:", err);
+      }
     }
   });
 };

@@ -1,5 +1,11 @@
 import { Pool } from "pg";
 
+console.log("NODE_ENV: ", process.env.NODE_ENV);
+
+if (!process.env.DATABASE_URL && process.env.NODE_ENV !== "test") {
+  throw new Error("Missing required environment variable: DATABASE_URL");
+}
+
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });

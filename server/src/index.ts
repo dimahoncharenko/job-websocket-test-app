@@ -18,9 +18,14 @@ const wss = new WebSocketServer({ server: httpServer });
 
 wss.on("connection", (socket: WebSocket) => wsConnection(socket));
 
-initTables().then(() => {
-  httpServer.listen(port);
-});
+initTables()
+  .then(() => {
+    httpServer.listen(port);
+  })
+  .catch((err) => {
+    console.error("Failed to initialize database tables:", err);
+    process.exit(1);
+  });
 
 wss.on("listening", () => {
   console.log(`Server listening on port: ${port}`);

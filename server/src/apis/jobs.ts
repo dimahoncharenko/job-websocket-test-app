@@ -11,6 +11,12 @@ router.post("/jobs", async (_, res) => {
 
 router.get("/jobs/:id", async (req, res) => {
   const id = Number(req.params.id);
+
+  if (!Number.isInteger(id)) {
+    res.status(400).json({ error: "Invalid job id" });
+    return;
+  }
+
   const job = await jobsService.getJob(id);
 
   if (!job) {

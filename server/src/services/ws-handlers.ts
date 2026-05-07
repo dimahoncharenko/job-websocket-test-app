@@ -8,7 +8,7 @@ type EventHandler = (socket: WebSocket, payload: unknown) => void | Promise<void
 
 export const handlers: Record<string, EventHandler> = {
   ping: (socket) => {
-    socket.send(JSON.stringify({ message: "Pong!" }));
+    socket.send(JSON.stringify({ event: "pong", message: "Pong!" }));
   },
 
   "proceed-job": async (socket) => {

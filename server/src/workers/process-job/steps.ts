@@ -13,13 +13,13 @@ const makeStep =
 const makeFailedStep =
   (message: string, delayMs: number): Step =>
   (_jobId) =>
-    new Promise((_, reject) => setTimeout(() => reject(new Error("Ka-boom 💥")), delayMs));
+    new Promise((_, reject) => setTimeout(() => reject(new Error(message)), delayMs));
 
 export default [
   makeStep("Spinning up the engines...", 800),
   makeStep("Data preprocessed!", 1200),
   makeStep("Running integrity checks...", 1000),
-  // makeFailedStep("Planting a bomb...", 500),
+  // makeFailedStep("Ka-boom 💥", 500),
   makeStep("Crunching the numbers...", 10800),
   makeStep("Webhook notified!", 900),
   makeStep("Cleaning up the workspace...", 600),

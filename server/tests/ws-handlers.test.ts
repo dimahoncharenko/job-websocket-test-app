@@ -30,7 +30,7 @@ describe("ping", () => {
   it("sends Pong!", () => {
     const socket = mockSocket();
     handlers.ping(socket, null);
-    expect(socket.send).toHaveBeenCalledWith(JSON.stringify({ message: "Pong!" }));
+    expect(socket.send).toHaveBeenCalledWith(JSON.stringify({ event: "pong", message: "Pong!" }));
   });
 });
 
@@ -67,9 +67,15 @@ describe("proceed-job", () => {
 
   it("creates an AbortController and attaches it to the socket", async () => {
     const socket = mockSocket();
+    let controllerDuringProcessing: AbortController | undefined;
+
+    vi.mocked(processJob).mockImplementation(async (_jobId) => {
+      controllerDuringProcessing = socket.abortController;
+    });
+
     await handlers["proceed-job"](socket, null);
 
-    expect(socket.abortController).toBeInstanceOf(AbortController);
+    expect(controllerDuringProcessing).toBeInstanceOf(AbortController);
   });
 });
 
@@ -86,7 +92,13 @@ describe("proceed-job — step progress", () => {
     await handlers["proceed-job"](socket, null);
 
     expect(socket.send).toHaveBeenCalledWith(
-      JSON.stringify({ event: "job-progress", jobId: 42, status: "processing", progress: 50, message: "a" }),
+      JSON.stringify({
+        event: "job-progress",
+        jobId: 42,
+        status: "processing",
+        progress: 50,
+        message: "a",
+      }),
     );
   });
 
@@ -95,7 +107,13 @@ describe("proceed-job — step progress", () => {
     await handlers["proceed-job"](socket, null);
 
     expect(socket.send).toHaveBeenCalledWith(
-      JSON.stringify({ event: "job-progress", jobId: 42, status: "done", progress: 100, message: "b" }),
+      JSON.stringify({
+        event: "job-progress",
+        jobId: 42,
+        status: "done",
+        progress: 100,
+        message: "b",
+      }),
     );
   });
 
@@ -126,7 +144,13 @@ describe("proceed-job — step failure", () => {
     await handlers["proceed-job"](socket, null);
 
     expect(socket.send).toHaveBeenCalledWith(
-      JSON.stringify({ event: "job-progress", jobId: 42, status: "failed", progress: 0, message: "something went wrong" }),
+      JSON.stringify({
+        event: "job-progress",
+        jobId: 42,
+        status: "failed",
+        progress: 0,
+        message: "something went wrong",
+      }),
     );
   });
 
