@@ -1,7 +1,13 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+import { ProgressRingIcon } from "@/components/Icons";
 import { Testimonial } from "@/components/Testimonial";
 
 const R = 70;
 const CIRCUMFERENCE = 2 * Math.PI * R;
+const TRANSITION_MS = 700;
 
 interface Props {
   progress: number;
@@ -10,6 +16,54 @@ interface Props {
 export const JobProcessingWebSocket = ({ progress }: Props) => {
   const safeProgress = Math.max(0, Math.min(100, Math.round(progress)));
   const dash = (safeProgress / 100) * CIRCUMFERENCE;
+
+  const reducedMotion =
+    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const [displayedProgress, setDisplayedProgress] = useState(safeProgress);
+  const rafRef = useRef<number | null>(null);
+  const startRef = useRef<number | null>(null);
+  const fromRef = useRef(safeProgress);
+
+  useEffect(() => {
+    const from = fromRef.current;
+    const to = safeProgress;
+
+    if (from === to) {
+      return;
+    }
+
+    if (reducedMotion) {
+      fromRef.current = to;
+      return;
+    }
+
+    if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    startRef.current = null;
+
+    const easeInOut = (t: number) =>
+      t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+    const step = (timestamp: number) => {
+      if (startRef.current === null) startRef.current = timestamp;
+
+      const progress = Math.min((timestamp - startRef.current) / TRANSITION_MS, 1);
+      const value = Math.round(from + (to - from) * easeInOut(progress));
+      setDisplayedProgress(value);
+
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(step);
+      } else {
+        fromRef.current = to;
+        rafRef.current = null;
+      }
+    };
+
+    rafRef.current = requestAnimationFrame(step);
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
+  }, [safeProgress, reducedMotion]);
 
   return (
     <div className="text-center h-full flex flex-col pb-6">
@@ -21,34 +75,13 @@ export const JobProcessingWebSocket = ({ progress }: Props) => {
         aria-label="Job progress"
         className="relative size-[168px] mx-auto mb-6"
       >
-        <svg
-          aria-hidden="true"
-          width="168"
-          height="168"
-          viewBox="0 0 168 168"
-          className="-rotate-90"
-        >
-          <circle cx="84" cy="84" r={R} stroke="var(--gray-100)" strokeWidth="6" fill="none" />
-          <circle
-            cx="84"
-            cy="84"
-            r={R}
-            stroke="url(#ringGrad)"
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeDasharray={`${dash} ${CIRCUMFERENCE}`}
-            fill="none"
-            style={{ transition: "stroke-dasharray 80ms linear" }}
-          />
-          <defs>
-            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="var(--teal-400)" />
-              <stop offset="100%" stopColor="var(--teal-600)" />
-            </linearGradient>
-          </defs>
-        </svg>
+        <ProgressRingIcon
+          dash={dash}
+          circumference={CIRCUMFERENCE}
+          transition={reducedMotion ? "none" : `stroke-dasharray ${TRANSITION_MS}ms ease-in-out`}
+        />
         <div className="absolute inset-0 flex items-center justify-center text-[34px] font-bold text-(--teal-400)">
-          {safeProgress}%
+          {reducedMotion ? safeProgress : displayedProgress}%
         </div>
       </div>
       <p className="text-2xl text-(--neutral-primary) mb-2">Creating something good for you…</p>

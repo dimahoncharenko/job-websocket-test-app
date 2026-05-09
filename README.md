@@ -52,11 +52,11 @@ The user launches the job in one of two modes:
 #### WebSocket mode
 
 1. Frontend creates a job via `POST /jobs` (status: `queued`).
-2. Opens a WebSocket connection to `ws://localhost:4000`.
+2. Opens a WebSocket connection to the backend.
 3. Sends `{ event: "proceed-job", jobId }`.
 4. Server transitions the job to `processing` and runs a 7-step pipeline (~17 s total).
 5. Each completed step emits a `job-progress` event with updated `status` and `progress` (0–100 %).
-6. Frontend displays a circular SVG progress indicator that updates in real time.
+6. Frontend displays a circular SVG progress ring with a smooth animated counter. Respects `prefers-reduced-motion` — disables animation when set.
 7. If the socket closes mid-job the server marks it as `failed`.
 
 #### HTTP polling mode
@@ -67,6 +67,8 @@ The user launches the job in one of two modes:
 4. Frontend shows an indeterminate progress bar during polling.
 
 **Job status states:** `idle → queued → processing → done / failed`
+
+On failure, clicking **Try again** resets to the `idle` state (launch screen) without navigating away from the job page.
 
 ---
 
@@ -90,13 +92,14 @@ Progress is calculated as `(completedSteps / totalSteps) * 100` and persisted to
 
 ## Tech Stack
 
-| Layer    | Technology                                         |
-| -------- | -------------------------------------------------- |
-| Frontend | Next.js 15, React 19, TypeScript, Tailwind CSS v4  |
-| Backend  | Node.js, Express 4, `ws` 8, TypeScript             |
-| Database | PostgreSQL (single `jobs` table)                   |
-| Testing  | Vitest + React Testing Library (both workspaces)   |
-| CI       | GitHub Actions (`ci.yml` and `deploy-frontend.yml`)|
+| Layer    | Technology                                           |
+| -------- | ---------------------------------------------------- |
+| Frontend | Next.js 16, React 19, TypeScript, Tailwind CSS v4    |
+| Backend  | Node.js, Express 4, `ws` 8, TypeScript               |
+| Database | PostgreSQL (single `jobs` table)                     |
+| Testing  | Vitest + React Testing Library (both workspaces)     |
+| CI       | GitHub Actions — tests on PR, manual deploy workflow |
+| Hosting  | Firebase Hosting (frontend) · Render (backend)       |
 
 ---
 
@@ -170,11 +173,11 @@ The backend is deployed as a **Web Service** on [Render](https://render.com).
 
 Required environment variables in Render dashboard:
 
-| Variable | Value |
-|---|---|
-| `PORT` | set automatically by Render |
-| `DATABASE_URL` | connection string to a PostgreSQL instance |
-| `CORS_ORIGIN` | Firebase Hosting URL (e.g. `https://your-project.web.app`) |
+| Variable       | Value                                                 |
+| -------------- | ----------------------------------------------------- |
+| `PORT`         | set automatically by Render                           |
+| `DATABASE_URL` | connection string to a PostgreSQL instance            |
+| `CORS_ORIGIN`  | Firebase Hosting URL (e.g. `https://project.web.app`) |
 
 Build command: `npm install && npm run build`  
 Start command: `npm run start`
@@ -195,11 +198,11 @@ firebase deploy --only hosting
 
 The workflow at `.github/workflows/deploy-frontend.yml` can be triggered manually from the GitHub Actions tab. It requires the following repository secrets:
 
-| Secret | Value |
-|---|---|
-| `NEXT_PUBLIC_API_URL` | `https://<your-render-backend-url>` |
-| `NEXT_PUBLIC_WS_URL` | `wss://<your-render-backend-url>` |
-| `FIREBASE_TOKEN` | obtained by running `firebase login:ci` locally |
+| Secret                | Value                                           |
+| --------------------- | ----------------------------------------------- |
+| `NEXT_PUBLIC_API_URL` | `https://<render-service-backend-url>`          |
+| `NEXT_PUBLIC_WS_URL`  | `wss://<render-service-backend-url>`            |
+| `FIREBASE_TOKEN`      | obtained by running `firebase login:ci` locally |
 
 ---
 

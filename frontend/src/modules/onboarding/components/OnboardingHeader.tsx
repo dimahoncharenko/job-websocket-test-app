@@ -2,6 +2,8 @@
 
 import { usePathname, useRouter } from "next/navigation";
 
+import { ChevronLeftIcon } from "@/components/Icons";
+
 import { useJobStatus } from "../context/JobStatusContext";
 
 const RETURN_LINKS_MAP: Record<string, string | null> = {
@@ -25,7 +27,7 @@ export const OnboardingHeader = () => {
   const showProgress = progress !== undefined;
 
   const isJobPage = pathname === "/onboarding/job";
-  const hideBack = isJobPage && ["queued", "processing"].includes(jobPhase);
+  const hideBack = isJobPage && ["queued", "processing", "failed", "done"].includes(jobPhase);
   const canGoBack = !!backRoute && !hideBack;
 
   const handleBackClick = () => {
@@ -48,15 +50,7 @@ export const OnboardingHeader = () => {
           canGoBack ? "cursor-pointer text-(--blue-600)" : "cursor-default text-[#CFD3D8]",
         ].join(" ")}
       >
-        <svg aria-hidden width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M15 6l-6 6 6 6"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <ChevronLeftIcon />
       </button>
       {showProgress && (
         <div
