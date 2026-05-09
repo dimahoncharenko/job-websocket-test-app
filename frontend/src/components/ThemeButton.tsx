@@ -14,7 +14,7 @@ export const ThemeButton = ({ isValid, className, ...props }: Props) => {
       className={[
         "w-full px-5 py-4 rounded-xl border-none text-base font-semibold text-white tracking-wide",
         "transition-[background,box-shadow] duration-200 ease-in-out",
-        isDisabled
+        !isDisabled
           ? "bg-linear-to-r from-[#1FA9C7] to-[#1BB97C] shadow-[0_6px_18px_rgba(15,138,117,0.28)] cursor-pointer"
           : "bg-[#BDE8DE] shadow-none cursor-default",
         className,
