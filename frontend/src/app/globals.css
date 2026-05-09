@@ -1,15 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f4f5f7;
   --foreground: #171717;
+  --white: #fff;
+  --neutral-primary: #141415;
+  --neutral-secondary: #555557;
+  --critical-primary: #e42d0d;
+  --teal-100: #eaf8f2;
+  --teal-200: #cdeedf;
+  --teal-400: #16b79b;
+  --teal-500: #0e9c84;
+  --teal-600: #0f8a75;
+  --teal-800: #16b79b4d;
+  --gray-100: #eef0f2;
+  --gray-200: #e5e7eb;
+  --gray-500: #6b7280;
+  --blue-600: #3a3f46;
+  --blue-800: #1018280a;
+  --blue-900: #1b1b1f;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +36,36 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geologica), Arial, sans-serif;
+  scrollbar-gutter: stable;
+}
+
+:focus-visible {
+  outline: 2px solid var(--teal-400);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+@keyframes indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+.animate-indeterminate {
+  animation: indeterminate 1.4s infinite ease-in-out;
 }
