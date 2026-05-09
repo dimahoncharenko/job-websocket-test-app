@@ -1,4 +1,4 @@
-# job-websocket-test-app
+# Websocket project
 
 A full-stack wellness onboarding application demonstrating two job-processing patterns — real-time **WebSocket** updates and **HTTP polling** — backed by a Node.js/Express + PostgreSQL server and a Next.js frontend.
 
