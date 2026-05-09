@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { createServer } from "http";
+import cors from "cors";
 import express from "express";
 import { WebSocket, WebSocketServer } from "ws";
 
@@ -10,6 +11,7 @@ import apiRoutes from "@apis/jobs";
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const app = express();
+app.use(cors({ origin: process.env.CORS_ORIGIN ?? "*" }));
 app.use(express.json());
 app.use(apiRoutes);
 
