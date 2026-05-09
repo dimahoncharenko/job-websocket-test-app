@@ -90,13 +90,13 @@ Progress is calculated as `(completedSteps / totalSteps) * 100` and persisted to
 
 ## Tech Stack
 
-| Layer    | Technology                                        |
-| -------- | ------------------------------------------------- |
-| Frontend | Next.js 15, React 19, TypeScript, Tailwind CSS v4 |
-| Backend  | Node.js, Express 4, `ws` 8, TypeScript            |
-| Database | PostgreSQL (single `jobs` table)                  |
-| Testing  | Vitest + React Testing Library (both workspaces)  |
-| CI       | GitHub Actions (`.github/workflows/ci.yml`)       |
+| Layer    | Technology                                         |
+| -------- | -------------------------------------------------- |
+| Frontend | Next.js 15, React 19, TypeScript, Tailwind CSS v4  |
+| Backend  | Node.js, Express 4, `ws` 8, TypeScript             |
+| Database | PostgreSQL (single `jobs` table)                   |
+| Testing  | Vitest + React Testing Library (both workspaces)   |
+| CI       | GitHub Actions (`ci.yml` and `deploy-frontend.yml`)|
 
 ---
 
@@ -112,8 +112,8 @@ NEXT_PUBLIC_WS_URL=ws://localhost:4000
 **Frontend** — `frontend/.env.production` (used by `next build`):
 
 ```
-NEXT_PUBLIC_API_URL=https://<your-render-backend-url>
-NEXT_PUBLIC_WS_URL=wss://<your-render-backend-url>
+NEXT_PUBLIC_API_URL=https://<render-service-backend-url>
+NEXT_PUBLIC_WS_URL=wss://<render-service-backend-url>
 ```
 
 **Backend** (`server/.env`):
@@ -121,7 +121,7 @@ NEXT_PUBLIC_WS_URL=wss://<your-render-backend-url>
 ```
 PORT=4000
 DATABASE_URL=postgresql://...
-CORS_ORIGIN=https://<your-firebase-hosting-url>
+CORS_ORIGIN=https://<firebase-hosting-url>
 ```
 
 ---
