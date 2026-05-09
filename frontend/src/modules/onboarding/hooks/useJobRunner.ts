@@ -29,17 +29,23 @@ export const useJobRunner = (onReset: () => void) => {
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
+      // For legacy browsers support
+      e.returnValue = "";
     };
+
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [status]);
 
   useEffect(() => {
-    const poll = pollRef.current;
-    const ws = wsRef.current;
     return () => {
-      if (poll) clearInterval(poll);
-      ws?.close();
+      if (pollRef.current) {
+        clearInterval(pollRef.current);
+      }
+
+      pollRef.current = null;
+      wsRef.current?.close();
+      wsRef.current = null;
     };
   }, []);
 

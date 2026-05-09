@@ -9,10 +9,7 @@ interface JobStatusContextValue {
   setJobPhase: (phase: JobPhase) => void;
 }
 
-const JobStatusContext = createContext<JobStatusContextValue>({
-  jobPhase: "idle",
-  setJobPhase: () => {},
-});
+const JobStatusContext = createContext<JobStatusContextValue | null>(null);
 
 export const JobStatusProvider = ({ children }: { children: ReactNode }) => {
   const [jobPhase, setJobPhase] = useState<JobPhase>("idle");
@@ -25,5 +22,10 @@ export const JobStatusProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useJobStatus = () => {
-  return useContext(JobStatusContext);
+  const ctx = useContext(JobStatusContext);
+  if (!ctx) {
+    throw new Error("useJobStatus must be used within JobStatusProvider");
+  }
+
+  return ctx;
 };

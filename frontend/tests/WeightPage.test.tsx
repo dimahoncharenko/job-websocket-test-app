@@ -20,7 +20,7 @@ describe("WeightPage — current step", () => {
     const user = userEvent.setup();
     render(<WeightPage onContinue={vi.fn()} />);
 
-    await user.type(screen.getByRole("textbox", { name: "Weight in lbs" }), "150");
+    await user.type(screen.getByRole("textbox", { name: "Your weight in lbs" }), "150");
 
     expect(screen.getByRole("button", { name: "Continue" })).toBeEnabled();
   });
@@ -29,7 +29,7 @@ describe("WeightPage — current step", () => {
     const user = userEvent.setup();
     render(<WeightPage onContinue={vi.fn()} />);
 
-    await user.type(screen.getByRole("textbox", { name: "Weight in lbs" }), "999");
+    await user.type(screen.getByRole("textbox", { name: "Your weight in lbs" }), "999");
 
     expect(screen.getByRole("button", { name: "Continue" })).toBeDisabled();
   });
@@ -38,10 +38,10 @@ describe("WeightPage — current step", () => {
     const user = userEvent.setup();
     render(<WeightPage onContinue={vi.fn()} />);
 
-    await user.type(screen.getByRole("textbox", { name: "Weight in lbs" }), "150");
+    await user.type(screen.getByRole("textbox", { name: "Your weight in lbs" }), "150");
     await user.click(screen.getByRole("tab", { name: "kg" }));
 
-    expect(screen.getByRole("textbox", { name: "Weight in kg" })).toHaveValue("");
+    expect(screen.getByRole("textbox", { name: "Your weight in kg" })).toHaveValue("");
   });
 });
 
@@ -50,7 +50,7 @@ describe("WeightPage — goal step", () => {
     const user = userEvent.setup();
     render(<WeightPage onContinue={vi.fn()} />);
 
-    await user.type(screen.getByRole("textbox", { name: "Weight in lbs" }), "200");
+    await user.type(screen.getByRole("textbox", { name: "Your weight in lbs" }), "200");
     await user.click(screen.getByRole("button", { name: "Continue" }));
 
     return user;
@@ -75,7 +75,7 @@ describe("WeightPage — goal step", () => {
     const user = userEvent.setup();
     render(<WeightPage onContinue={onContinue} />);
 
-    await user.type(screen.getByRole("textbox", { name: "Weight in lbs" }), "200");
+    await user.type(screen.getByRole("textbox", { name: "Your weight in lbs" }), "200");
     await user.click(screen.getByRole("button", { name: "Continue" }));
     await user.type(screen.getByRole("textbox", { name: "Goal weight in lbs" }), "170");
     await user.click(screen.getByRole("button", { name: "Continue" }));

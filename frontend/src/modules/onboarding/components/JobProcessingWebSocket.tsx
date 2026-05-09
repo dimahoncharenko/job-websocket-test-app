@@ -8,13 +8,14 @@ interface Props {
 }
 
 export const JobProcessingWebSocket = ({ progress }: Props) => {
-  const dash = (progress / 100) * CIRCUMFERENCE;
+  const safeProgress = Math.max(0, Math.min(100, Math.round(progress)));
+  const dash = (safeProgress / 100) * CIRCUMFERENCE;
 
   return (
     <div className="text-center pt-4">
       <div
         role="progressbar"
-        aria-valuenow={progress}
+        aria-valuenow={safeProgress}
         aria-valuemin={0}
         aria-valuemax={100}
         aria-label="Job progress"
@@ -47,7 +48,7 @@ export const JobProcessingWebSocket = ({ progress }: Props) => {
           </defs>
         </svg>
         <div className="absolute inset-0 flex items-center justify-center text-[34px] font-bold text-(--teal-400)">
-          {progress}%
+          {safeProgress}%
         </div>
       </div>
       <p className="text-xl font-bold text-(--blue-900) mb-2">Creating something good for you…</p>

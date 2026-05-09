@@ -33,7 +33,7 @@ export const WeightInput = ({ rawValue, unit, step, isValid, inputRef, onChange 
         aria-label={`${step === "goal" ? "Goal weight" : "Your weight"} in ${unit}`}
         aria-describedby="weight-hint"
         aria-invalid={rawValue !== "" && !isValid}
-        autoComplete="false"
+        autoComplete="off"
         style={{
           width: rawValue ? `${Math.max(1, rawValue.length)}ch` : "6ch",
         }}
