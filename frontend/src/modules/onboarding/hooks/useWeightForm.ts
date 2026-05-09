@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export type WeightUnit = "lbs" | "kg";
 
@@ -13,6 +13,10 @@ export const useWeightForm = (onContinue: () => void) => {
   const [step, setStep] = useState<"current" | "goal">("current");
   const [currentWeight, setCurrentWeight] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const num = parseFloat(rawValue);
   const range = RANGES[unit];

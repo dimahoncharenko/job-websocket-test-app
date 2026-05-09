@@ -28,7 +28,7 @@ export const WeightHint = ({ range, unit, isValid }: Props) => {
         {announcement}
       </span>
       <p
-        aria-hidden="true"
+        aria-hidden
         className={[
           "text-center text-md mt-3",
           isValid ? "text-(--neutral-secondary)" : "text-(--critical-primary)",

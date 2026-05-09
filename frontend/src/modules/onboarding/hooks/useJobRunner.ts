@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
+import jobsService from "../../../services/jobs";
 import { useJobStatus } from "../context/JobStatusContext";
 
 export type Mode = "websocket" | "http";
 export type Status = "idle" | "queued" | "processing" | "done" | "failed";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "";
 
 export const useJobRunner = (onReset: () => void) => {
@@ -23,7 +23,10 @@ export const useJobRunner = (onReset: () => void) => {
   }, [status, setJobPhase]);
 
   useEffect(() => {
-    if (!["queued", "processing"].includes(status)) return;
+    if (!["queued", "processing"].includes(status)) {
+      return;
+    }
+
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
     };
@@ -54,7 +57,7 @@ export const useJobRunner = (onReset: () => void) => {
     setProgress(0);
 
     try {
-      const res = await fetch(`${API_URL}/jobs`, { method: "POST" });
+      const res = await jobsService.createJob();
       if (!res.ok) {
         throw new Error("Failed to create job");
       }
@@ -99,14 +102,14 @@ export const useJobRunner = (onReset: () => void) => {
     setProgress(0);
 
     try {
-      const res = await fetch(`${API_URL}/jobs`, { method: "POST" });
+      const res = await jobsService.createJob();
       if (!res.ok) {
         throw new Error("Failed to create job");
       }
 
       const job: { id: number } = await res.json();
 
-      const startRes = await fetch(`${API_URL}/jobs/${job.id}`, { method: "POST" });
+      const startRes = await jobsService.proceedJob(job.id);
       if (!startRes.ok) {
         throw new Error("Failed to start job");
       }
@@ -115,7 +118,7 @@ export const useJobRunner = (onReset: () => void) => {
 
       pollRef.current = setInterval(async () => {
         try {
-          const pollRes = await fetch(`${API_URL}/jobs/${job.id}`);
+          const pollRes = await jobsService.getJobById(job.id);
           if (!pollRes.ok) {
             throw new Error("Failed to poll job");
           }

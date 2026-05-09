@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Geologica } from "next/font/google";
 
@@ -11,11 +12,7 @@ export const metadata: Metadata = {
   description: "Personalized wellness planning",
 };
 
-export default function MainLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function MainLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${geologica.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>

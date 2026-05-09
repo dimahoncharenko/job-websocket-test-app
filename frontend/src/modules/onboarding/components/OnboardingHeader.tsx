@@ -4,13 +4,13 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { useJobStatus } from "../context/JobStatusContext";
 
-const BACK: Record<string, string | null> = {
+const RETURN_LINKS_MAP: Record<string, string | null> = {
   "/onboarding/wish": null,
   "/onboarding/weight": "/onboarding/wish",
   "/onboarding/job": "/onboarding/weight",
 };
 
-const PROGRESS: Record<string, number> = {
+const PROGRESS_MAP: Record<string, number> = {
   "/onboarding/wish": 33,
   "/onboarding/weight": 66,
 };
@@ -20,18 +20,21 @@ export const OnboardingHeader = () => {
   const router = useRouter();
   const { jobPhase } = useJobStatus();
 
-  const backRoute = BACK[pathname];
-  const progress = PROGRESS[pathname];
+  const backRoute = RETURN_LINKS_MAP[pathname];
+  const progress = PROGRESS_MAP[pathname];
   const showProgress = progress !== undefined;
 
   const isJobPage = pathname === "/onboarding/job";
   const hideBack = isJobPage && ["queued", "processing"].includes(jobPhase);
   const canGoBack = !!backRoute && !hideBack;
 
-  function handleBackClick() {
-    if (!canGoBack) return;
-    router.push(backRoute!);
-  }
+  const handleBackClick = () => {
+    if (!canGoBack) {
+      return;
+    }
+
+    router.push(backRoute);
+  };
 
   return (
     <div className="flex items-center mx-auto gap-3 xl:gap-10 p-4 max-w-[1112px] h-full">
@@ -42,7 +45,7 @@ export const OnboardingHeader = () => {
         className={[
           "bg-transparent border-none p-1 flex items-center shrink-0 transition-opacity duration-200",
           hideBack ? "opacity-0 pointer-events-none" : "",
-          canGoBack ? "cursor-pointer text-[#3A3F46]" : "cursor-default text-[#CFD3D8]",
+          canGoBack ? "cursor-pointer text-(--blue-600)" : "cursor-default text-[#CFD3D8]",
         ].join(" ")}
       >
         <svg aria-hidden width="24" height="24" viewBox="0 0 24 24" fill="none">

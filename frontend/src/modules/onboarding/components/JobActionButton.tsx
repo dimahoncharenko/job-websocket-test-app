@@ -1,11 +1,13 @@
 "use client";
 
+import { ReactNode } from "react";
+
 export const JobActionButton = ({
   onClick,
   children,
 }: {
   onClick: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
 }) => {
   return (
     <button

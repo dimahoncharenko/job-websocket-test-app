@@ -9,9 +9,9 @@ export const Testimonial = () => {
         >
           ★★★★★
         </span>
-        <div className="text-xs font-semibold text-[#3A3F46]">John</div>
+        <div className="text-xs font-semibold text-(--blue-600)">John</div>
       </div>
-      <p className="m-0 text-xs text-[#3A3F46] leading-normal">
+      <p className="m-0 text-xs text-(--blue-600) leading-normal">
         &ldquo;I love this — it makes planning so easy and keeps me motivated!&rdquo;
       </p>
     </div>
