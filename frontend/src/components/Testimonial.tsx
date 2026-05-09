@@ -9,18 +9,20 @@ type Props = {
 };
 
 export const Testimonial = ({ author, comment, rating }: Props) => {
+  const safeRating = Math.max(0, Math.min(MAX_STARS, Math.round(rating)));
+
   return (
     <div className="bg-(--teal-100) border border-(--teal-200) rounded-xl py-3 px-3.5">
       <div className="flex items-center justify-between mb-1">
-        <p className="text-2xl" aria-label={`${rating} out of ${MAX_STARS} stars`}>
+        <p className="text-2xl" aria-label={`${safeRating} out of ${MAX_STARS} stars`}>
           <span aria-hidden className="text-[#F4B400]">
-            {Array.from({ length: rating }).map((_, index) => (
+            {Array.from({ length: safeRating }).map((_, index) => (
               <Fragment key={`gold-star-${index}`}>★</Fragment>
             ))}
           </span>
-          {rating >= MAX_STARS ? null : (
+          {safeRating >= MAX_STARS ? null : (
             <span aria-hidden className="text-(--gray-200)">
-              {Array.from({ length: MAX_STARS - rating }).map((_, index) => (
+              {Array.from({ length: MAX_STARS - safeRating }).map((_, index) => (
                 <Fragment key={`gray-star-${index}`}>★</Fragment>
               ))}
             </span>
