@@ -115,8 +115,8 @@ NEXT_PUBLIC_WS_URL=ws://localhost:4000
 **Frontend** — `frontend/.env.production` (used by `next build`):
 
 ```
-NEXT_PUBLIC_API_URL=https://<your-render-backend-url>
-NEXT_PUBLIC_WS_URL=wss://<your-render-backend-url>
+NEXT_PUBLIC_API_URL=https://<render-service-backend-url>
+NEXT_PUBLIC_WS_URL=wss://<render-service-backend-url>
 ```
 
 **Backend** (`server/.env`):
@@ -124,7 +124,7 @@ NEXT_PUBLIC_WS_URL=wss://<your-render-backend-url>
 ```
 PORT=4000
 DATABASE_URL=postgresql://...
-CORS_ORIGIN=https://<your-firebase-hosting-url>
+CORS_ORIGIN=https://<firebase-hosting-url>
 ```
 
 ---
