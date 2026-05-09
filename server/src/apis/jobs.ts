@@ -32,7 +32,9 @@ router.post("/jobs/:id", async (req, res) => {
   await jobsService.updateJob(id, { status: "processing" });
 
   // Fire and forget, the status will be polled from a client
-  jobsService.runJob(id);
+  jobsService.runJob(id).catch((err) => {
+    console.error(`Failed to run job ${id}:`, err);
+  });
 
   res.status(202).json({ ...job, status: "processing", progress: 0 });
 });

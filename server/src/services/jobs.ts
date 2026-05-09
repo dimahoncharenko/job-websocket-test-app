@@ -85,7 +85,7 @@ const service = {
       jobId,
       steps,
       async (index, total, data) => {
-        const progress = Math.round((index / total) * 100);
+        const progress = total > 0 ? Math.round((index / total) * 100) : 0;
         const status: JobStatus = index === total ? "done" : "processing";
         await service.updateJob(jobId, { status, progress });
         await callbacks.onStep?.({ index, total, data, progress, status });
