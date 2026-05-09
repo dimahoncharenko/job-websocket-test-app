@@ -31,7 +31,7 @@ export const useWeightForm = (onContinue: () => void) => {
   };
 
   const handleValueChange = (value: string) => {
-    const normalized = value.replace(/[^0-9]/g, "");
+    const normalized = value.replace(/[^0-9]/g, "").replace(/^0+(\d)/, "$1");
     setRawValue(normalized);
   };
 
