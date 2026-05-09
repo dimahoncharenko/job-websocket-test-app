@@ -10,7 +10,7 @@ interface Props {
 
 export const JobDone = ({ onReset }: Props) => {
   return (
-    <div className="text-center">
+    <div className="text-center h-full flex flex-col">
       <div className="w-20 h-20 rounded-full bg-[#E7F8F2] flex items-center justify-center mx-auto mt-4">
         <svg aria-hidden width="40" height="40" viewBox="0 0 24 24" fill="none">
           <path
@@ -26,9 +26,15 @@ export const JobDone = ({ onReset }: Props) => {
       <p className="text-sm text-(--gray-500) leading-normal max-w-[280px] mx-auto mt-2 mb-6">
         Your personalized plan is ready. Let&apos;s begin your journey.
       </p>
-      <Testimonial />
-      <div className="mt-6">
-        <JobActionButton onClick={onReset}>Start over</JobActionButton>
+      <div className="mt-auto">
+        <Testimonial
+          author="John"
+          rating={4}
+          comment={'"I love this — it makes planning so easy and keeps me motivated!"'}
+        />
+        <div className="mt-6">
+          <JobActionButton onClick={onReset}>Start over</JobActionButton>
+        </div>
       </div>
     </div>
   );

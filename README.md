@@ -102,11 +102,18 @@ Progress is calculated as `(completedSteps / totalSteps) * 100` and persisted to
 
 ## Environment Variables
 
-**Frontend** (`frontend/.env.local`):
+**Frontend** — `frontend/.env.development` (local dev):
 
 ```
 NEXT_PUBLIC_API_URL=http://localhost:4000
 NEXT_PUBLIC_WS_URL=ws://localhost:4000
+```
+
+**Frontend** — `frontend/.env.production` (used by `next build`):
+
+```
+NEXT_PUBLIC_API_URL=https://<your-render-backend-url>
+NEXT_PUBLIC_WS_URL=wss://<your-render-backend-url>
 ```
 
 **Backend** (`server/.env`):
@@ -114,6 +121,7 @@ NEXT_PUBLIC_WS_URL=ws://localhost:4000
 ```
 PORT=4000
 DATABASE_URL=postgresql://...
+CORS_ORIGIN=https://<your-firebase-hosting-url>
 ```
 
 ---
@@ -140,9 +148,9 @@ npm run build && npm run start   # production
 ```bash
 cd frontend
 npm install
-npm run dev     # http://localhost:3000
+npm run dev     # http://localhost:3000 — uses .env.development
 # or
-npm run build && npm run start   # production
+npm run build && npm run start   # uses .env.production
 ```
 
 ### Running tests
@@ -151,6 +159,47 @@ npm run build && npm run start   # production
 cd server   && npm test
 cd frontend && npm test
 ```
+
+---
+
+## Deployment
+
+### Backend — Render
+
+The backend is deployed as a **Web Service** on [Render](https://render.com).
+
+Required environment variables in Render dashboard:
+
+| Variable | Value |
+|---|---|
+| `PORT` | set automatically by Render |
+| `DATABASE_URL` | connection string to a PostgreSQL instance |
+| `CORS_ORIGIN` | Firebase Hosting URL (e.g. `https://your-project.web.app`) |
+
+Build command: `npm install && npm run build`  
+Start command: `npm run start`
+
+### Frontend — Firebase Hosting
+
+The frontend is a static export deployed to [Firebase Hosting](https://firebase.google.com/docs/hosting).
+
+**Manual deploy:**
+
+```bash
+cd frontend
+npm run build
+firebase deploy --only hosting
+```
+
+**CI/CD (GitHub Actions):**
+
+The workflow at `.github/workflows/deploy-frontend.yml` can be triggered manually from the GitHub Actions tab. It requires the following repository secrets:
+
+| Secret | Value |
+|---|---|
+| `NEXT_PUBLIC_API_URL` | `https://<your-render-backend-url>` |
+| `NEXT_PUBLIC_WS_URL` | `wss://<your-render-backend-url>` |
+| `FIREBASE_TOKEN` | obtained by running `firebase login:ci` locally |
 
 ---
 

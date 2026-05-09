@@ -17,7 +17,7 @@ export default function JobPage({ onReset }: JobScreenProps) {
     useJobRunner(onReset);
 
   return (
-    <div className="px-5 pt-7 pb-6">
+    <div className="px-5 pt-7 pb-6 h-[85vh] max-h-[800px]">
       <div aria-live="polite" aria-atomic="true" className="sr-only">
         {announcedLabel}
       </div>
