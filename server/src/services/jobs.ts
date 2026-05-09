@@ -1,4 +1,6 @@
 import { pool } from "@providers/db";
+import processJob from "@workers/process-job";
+import steps, { StepResult } from "@workers/process-job/steps";
 
 export type JobStatus = "queued" | "processing" | "done" | "failed";
 
@@ -8,6 +10,20 @@ export interface Job {
   progress: number;
   createdAt: Date;
 }
+
+type StepNotification = {
+  index: number;
+  total: number;
+  data: StepResult["data"];
+  progress: number;
+  status: JobStatus;
+};
+
+export type RunJobCallbacks = {
+  onStep?: (notification: StepNotification) => void | Promise<void>;
+  onError?: (err: Error) => void | Promise<void>;
+  signal?: AbortSignal;
+};
 
 const service = {
   createJob: async () => {
@@ -63,6 +79,23 @@ const service = {
       progress: row.progress,
       createdAt: row.created_at,
     };
+  },
+  runJob: async (jobId: number, callbacks: RunJobCallbacks = {}) => {
+    await processJob(
+      jobId,
+      steps,
+      async (index, total, data) => {
+        const progress = Math.round((index / total) * 100);
+        const status: JobStatus = index === total ? "done" : "processing";
+        await service.updateJob(jobId, { status, progress });
+        await callbacks.onStep?.({ index, total, data, progress, status });
+      },
+      async (err) => {
+        await service.updateJob(jobId, { status: "failed" });
+        await callbacks.onError?.(err);
+      },
+      callbacks.signal,
+    );
   },
 };
 
