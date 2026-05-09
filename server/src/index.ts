@@ -11,7 +11,10 @@ import apiRoutes from "@apis/jobs";
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const app = express();
-app.use(cors({ origin: process.env.CORS_ORIGIN ?? "*" }));
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
+  : "*";
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 app.use(apiRoutes);
 
