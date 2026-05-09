@@ -12,14 +12,14 @@ export const JobProcessingWebSocket = ({ progress }: Props) => {
   const dash = (safeProgress / 100) * CIRCUMFERENCE;
 
   return (
-    <div className="text-center pt-4">
+    <div className="text-center h-full flex flex-col pb-6">
       <div
         role="progressbar"
         aria-valuenow={safeProgress}
         aria-valuemin={0}
         aria-valuemax={100}
         aria-label="Job progress"
-        className="relative w-[168px] h-40 mx-auto mb-6"
+        className="relative size-[168px] mx-auto mb-6"
       >
         <svg
           aria-hidden="true"
@@ -51,11 +51,17 @@ export const JobProcessingWebSocket = ({ progress }: Props) => {
           {safeProgress}%
         </div>
       </div>
-      <p className="text-xl font-bold text-(--blue-900) mb-2">Creating something good for you…</p>
-      <p className="text-sm text-(--gray-500) max-w-[280px] mx-auto mb-6 leading-normal">
-        This will only take a moment
+      <p className="text-2xl text-(--neutral-primary) mb-2">Creating something good for you…</p>
+      <p className="text-sm text-(--neutral-secondary) mx-auto mb-6 leading-normal">
+        This will only take a moment — your item is almost ready.
       </p>
-      <Testimonial />
+      <div className="mt-auto mb-4">
+        <Testimonial
+          author="John"
+          rating={4}
+          comment={'"I love this — it makes planning so easy and keeps me motivated!"'}
+        />
+      </div>
     </div>
   );
 };

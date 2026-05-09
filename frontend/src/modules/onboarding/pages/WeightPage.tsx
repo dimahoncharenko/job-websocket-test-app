@@ -28,8 +28,8 @@ export default function WeightPage({ onContinue }: WeightScreenProps) {
   } = useWeightForm(onContinue);
 
   return (
-    <div className="flex h-[85vh] max-h-[800px] flex-col items-center pt-2 xl:pt-14 px-5 pb-0 xl:pb-6">
-      <h1 className="text-4xl text-center mb-4 xl:mb-16 text-(--blue-900)">
+    <div className="flex h-[85vh] max-h-[800px] flex-col items-center pt-6 xl:pt-14 px-5 pb-4 xl:pb-6">
+      <h1 className="text-3xl xl:text-4xl text-center mb-4 xl:mb-16 text-(--blue-900)">
         {step === "current" ? (
           "What is your weight?"
         ) : (

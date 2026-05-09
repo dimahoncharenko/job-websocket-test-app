@@ -15,14 +15,9 @@ interface Props {
 
 export const WishList = ({ selected, onSelect }: Props) => {
   return (
-    <div role="radiogroup" className="flex flex-col gap-4">
+    <div role="radiogroup" className="flex flex-col gap-4 pb-4">
       {WISHES.map((w) => (
-        <WishOption
-          key={w.id}
-          wish={w}
-          selected={selected === w.id}
-          onSelect={onSelect}
-        />
+        <WishOption key={w.id} wish={w} selected={selected === w.id} onSelect={onSelect} />
       ))}
     </div>
   );
