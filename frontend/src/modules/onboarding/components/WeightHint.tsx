@@ -30,7 +30,7 @@ export const WeightHint = ({ range, unit, isValid }: Props) => {
       <p
         aria-hidden
         className={[
-          "text-center text-base mt-3",
+          "text-center mt-3",
           isValid ? "text-(--neutral-secondary)" : "text-(--critical-primary)",
         ].join(" ")}
       >

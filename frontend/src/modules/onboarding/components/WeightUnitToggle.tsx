@@ -24,7 +24,7 @@ export const WeightUnitToggle = ({ unit, onChange }: Props) => {
               aria-selected={active}
               onClick={() => onChange(u)}
               className={[
-                "px-[18px] py-[6px] rounded-full border-none text-base font-semibold cursor-pointer min-w-[44px] transition-all duration-200 ease-in-out",
+                "px-[18px] py-[6px] rounded-full border-none font-semibold cursor-pointer min-w-[44px] transition-all duration-200 ease-in-out",
                 active
                   ? "bg-linear-to-b from-(--teal-400) to-(--teal-600) text-white shadow-[0_2px_6px_rgba(15,138,117,0.25)]"
                   : "bg-transparent text-(--gray-500) shadow-none",

@@ -21,7 +21,7 @@ export const WishOption = ({ wish, selected, onSelect }: Props) => {
       aria-checked={selected}
       onClick={() => onSelect(wish.id)}
       className={[
-        "flex items-center gap-3 py-4 xl:py-6 px-4 bg-white rounded-2xl cursor-pointer text-base xl:text-[22px]",
+        "flex items-center gap-3 py-4 xl:py-6 px-4 bg-white rounded-2xl cursor-pointer xl:text-[22px]",
         "leading-tight text-(--blue-900) font-medium border-[1.5px] transition-all duration-180 ease-in-out",
         selected
           ? "border-(--teal-400) shadow-[0_0_14px_var(--teal-800)]"
