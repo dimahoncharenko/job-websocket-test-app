@@ -149,7 +149,7 @@ export const useJobRunner = (onReset: () => void) => {
     }
   };
 
-  const handleReset = () => {
+  const resetState = () => {
     if (pollRef.current) clearInterval(pollRef.current);
     pollRef.current = null;
     wsRef.current?.close();
@@ -157,7 +157,15 @@ export const useJobRunner = (onReset: () => void) => {
     setMode(null);
     setStatus("idle");
     setProgress(0);
+  };
+
+  const handleReset = () => {
+    resetState();
     onReset();
+  };
+
+  const handleRetry = () => {
+    resetState();
   };
 
   return {
@@ -168,6 +176,7 @@ export const useJobRunner = (onReset: () => void) => {
     launchWebSocket,
     launchHTTP,
     handleReset,
+    handleRetry,
   };
 };
 

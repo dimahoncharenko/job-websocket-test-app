@@ -13,7 +13,7 @@ interface JobScreenProps {
 }
 
 export default function JobPage({ onReset }: JobScreenProps) {
-  const { mode, status, progress, announcedLabel, launchWebSocket, launchHTTP, handleReset } =
+  const { mode, status, progress, announcedLabel, launchWebSocket, launchHTTP, handleReset, handleRetry } =
     useJobRunner(onReset);
 
   return (
@@ -31,7 +31,7 @@ export default function JobPage({ onReset }: JobScreenProps) {
       )}
       {status === "processing" && mode === "http" && <JobProcessingHTTP />}
       {status === "done" && <JobDone onReset={handleReset} />}
-      {status === "failed" && <JobFailed onReset={handleReset} />}
+      {status === "failed" && <JobFailed onReset={handleRetry} />}
     </div>
   );
 }

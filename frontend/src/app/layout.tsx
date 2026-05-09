@@ -6,8 +6,9 @@ import MainLayout from "@/modules/main/layout";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Wellness Platform",
-  description: "Personalized wellness planning",
+  title: "Vitapath — Your Wellness Journey Starts Here",
+  description:
+    "Set your goals, track your progress, and let Vitapath craft a personalized plan built around you.",
 };
 
 export default function RootLayout({

@@ -7,15 +7,19 @@
   --neutral-primary: #141415;
   --neutral-secondary: #555557;
   --critical-primary: #e42d0d;
+
   --teal-100: #eaf8f2;
   --teal-200: #cdeedf;
   --teal-400: #16b79b;
   --teal-500: #0e9c84;
   --teal-600: #0f8a75;
   --teal-800: #16b79b4d;
+
   --gray-100: #eef0f2;
   --gray-200: #e5e7eb;
+  --gray-300: #fdecea;
   --gray-500: #6b7280;
+
   --blue-600: #3a3f46;
   --blue-800: #1018280a;
   --blue-900: #1b1b1f;

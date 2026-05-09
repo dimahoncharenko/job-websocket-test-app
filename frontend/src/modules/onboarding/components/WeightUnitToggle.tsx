@@ -13,7 +13,7 @@ export const WeightUnitToggle = ({ unit, onChange }: Props) => {
       <div
         role="tablist"
         aria-label="Weight unit"
-        className="inline-flex bg-[#F1F3F5] p-1 rounded-full border border-(--gray-200)"
+        className="inline-flex bg-(--gray-100) p-1 rounded-full border border-(--gray-200)"
       >
         {(["lbs", "kg"] as const).map((u) => {
           const active = unit === u;
@@ -27,7 +27,7 @@ export const WeightUnitToggle = ({ unit, onChange }: Props) => {
                 "px-[18px] py-[6px] rounded-full border-none text-base font-semibold cursor-pointer min-w-[44px] transition-all duration-200 ease-in-out",
                 active
                   ? "bg-linear-to-b from-(--teal-400) to-(--teal-600) text-white shadow-[0_2px_6px_rgba(15,138,117,0.25)]"
-                  : "bg-transparent text-[#5C6166] shadow-none",
+                  : "bg-transparent text-(--gray-500) shadow-none",
               ].join(" ")}
             >
               {u}

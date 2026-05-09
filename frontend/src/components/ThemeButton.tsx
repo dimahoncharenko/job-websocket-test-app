@@ -4,7 +4,7 @@ type Props = {
   isValid?: boolean;
 } & DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
 
-export const ThemeButton = ({ isValid, className, ...props }: Props) => {
+export const ThemeButton = ({ isValid = true, className, ...props }: Props) => {
   const isDisabled = !isValid || !!props.disabled;
 
   return (

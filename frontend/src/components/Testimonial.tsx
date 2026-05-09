@@ -28,7 +28,7 @@ export const Testimonial = ({ author, comment, rating }: Props) => {
             </span>
           )}
         </p>
-        <div className="text-xs font-semibold text-(--blue-600)">{author}</div>
+        <div className="text-md font-semibold text-(--blue-600)">{author}</div>
       </div>
       <p className="m-0 text-sm text-left text-(--blue-600) leading-normal">{comment}</p>
     </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { CheckCircleIcon } from "@/components/Icons";
+
 interface Wish {
   id: string;
   emoji: string;
@@ -33,23 +35,7 @@ export const WishOption = ({ wish, selected, onSelect }: Props) => {
 
       {selected && (
         <span aria-hidden className="ml-auto flex">
-          <svg
-            width="20"
-            height="20"
-            className="xl:w-7 xl:h-7"
-            viewBox="0 0 24 24"
-            fill="none"
-            aria-hidden
-          >
-            <circle cx="12" cy="12" r="10" fill="var(--teal-400)" />
-            <path
-              d="M7.5 12.5l3 3 6-6.5"
-              stroke="#fff"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <CheckCircleIcon />
         </span>
       )}
     </button>

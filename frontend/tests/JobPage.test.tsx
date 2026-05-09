@@ -42,6 +42,19 @@ beforeEach(() => {
   latestWs = null;
   vi.stubGlobal("fetch", vi.fn());
   vi.stubGlobal("WebSocket", MockWebSocket);
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
 });
 
 afterEach(() => {
@@ -277,7 +290,59 @@ describe("beforeunload guard", () => {
   });
 });
 
+describe("reducedMotion", () => {
+  it("shows correct progress value immediately without animation when prefers-reduced-motion is set", async () => {
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query === "(prefers-reduced-motion: reduce)",
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+
+    vi.mocked(fetch).mockResolvedValue(makeResponse({ id: 1 }, 201));
+    const user = userEvent.setup();
+    renderPage();
+
+    await user.click(screen.getByRole("button", { name: /Process via WebSocket/ }));
+    await waitFor(() => expect(latestWs).not.toBeNull());
+    await act(() => {
+      latestWs!.onopen?.(new Event("open"));
+    });
+    await act(() => {
+      latestWs!.onmessage?.(wsProgressMessage("processing", 75));
+    });
+
+    expect(screen.getByText("75%")).toBeInTheDocument();
+    expect(screen.getByRole("progressbar", { name: "Job progress" })).toHaveAttribute(
+      "aria-valuenow",
+      "75",
+    );
+  });
+});
+
 describe("reset", () => {
+  it("returns to idle without calling onReset after a failed job", async () => {
+    vi.mocked(fetch).mockResolvedValue(makeResponse({ id: 1 }, 201));
+    const onReset = vi.fn();
+    const user = userEvent.setup();
+    renderPage(onReset);
+
+    await user.click(screen.getByRole("button", { name: /Process via WebSocket/ }));
+    await waitFor(() => expect(latestWs).not.toBeNull());
+    await act(() => {
+      latestWs!.onerror?.(new Event("error"));
+    });
+
+    await user.click(screen.getByRole("button", { name: "Try again" }));
+
+    expect(onReset).not.toHaveBeenCalled();
+    expect(screen.getByRole("button", { name: /Process via WebSocket/ })).toBeInTheDocument();
+  });
+
   it("returns to idle and calls onReset after completing a job", async () => {
     vi.mocked(fetch).mockResolvedValue(makeResponse({ id: 1 }, 201));
     const onReset = vi.fn();
