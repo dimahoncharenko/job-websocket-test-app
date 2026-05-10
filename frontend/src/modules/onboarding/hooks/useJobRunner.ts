@@ -160,8 +160,8 @@ export const useJobRunner = (onReset: () => void) => {
   };
 
   const handleReset = () => {
-    resetState();
     onReset();
+    resetState();
   };
 
   const handleRetry = () => {
