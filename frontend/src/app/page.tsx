@@ -10,6 +10,8 @@ export default function Home() {
   useEffect(() => {
     if (["/onboarding/wish", "/"].includes(pathname)) {
       router.replace("/onboarding/wish");
+    } else {
+      router.replace(pathname);
     }
   }, [router, pathname]);
 

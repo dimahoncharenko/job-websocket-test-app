@@ -15,7 +15,7 @@ export default function WishPage({ onContinue }: WishScreenProps) {
   return (
     <div className="pt-6 xl:pt-14 px-5 pb-0 xl:pb-6">
       <h1 className="text-3xl xl:text-4xl text-center mb-4 xl:mb-10 text-(--blue-900)">
-        What is your main wish?
+        What is your main wish? (111)
       </h1>
       <WishList selected={selected} onSelect={handleSelect} />
       {selected && (
