@@ -10,7 +10,7 @@ interface Props {
 export const JobDone = ({ onReset }: Props) => {
   return (
     <div className="text-center h-full flex flex-col xl:max-w-lg">
-      <div className="size-20 rounded-full bg-(--gray-300) flex items-center justify-center mx-auto mt-4">
+      <div className="size-20 rounded-full bg-(--gray-200) flex items-center justify-center mx-auto mt-4">
         <CheckIcon />
       </div>
       <h2 className="mt-6 text-[22px] font-bold text-(--blue-900)">You&apos;re all set!</h2>

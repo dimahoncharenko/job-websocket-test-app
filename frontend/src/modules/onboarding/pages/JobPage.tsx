@@ -13,12 +13,20 @@ interface JobScreenProps {
 }
 
 export default function JobPage({ onReset }: JobScreenProps) {
-  const { mode, status, progress, announcedLabel, launchWebSocket, launchHTTP, handleReset, handleRetry } =
-    useJobRunner(onReset);
+  const {
+    mode,
+    status,
+    progress,
+    announcedLabel,
+    launchWebSocket,
+    launchHTTP,
+    handleReset,
+    handleRetry,
+  } = useJobRunner(onReset);
 
   return (
     <div className="px-5 pt-7 pb-6 h-[85vh] max-h-[800px]">
-      <div aria-live="polite" aria-atomic="true" className="sr-only">
+      <div aria-live="polite" aria-atomic className="sr-only">
         {announcedLabel}
       </div>
 
