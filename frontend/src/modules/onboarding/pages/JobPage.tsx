@@ -10,11 +10,12 @@ import { useJobRunner } from "../hooks/useJobRunner";
 
 interface JobScreenProps {
   onReset: () => void;
+  initialDone?: boolean;
 }
 
-export default function JobPage({ onReset }: JobScreenProps) {
+export default function JobPage({ onReset, initialDone }: JobScreenProps) {
   const { mode, status, progress, announcedLabel, launchWebSocket, launchHTTP, handleReset, handleRetry } =
-    useJobRunner(onReset);
+    useJobRunner(onReset, initialDone);
 
   return (
     <div className="px-5 pt-7 pb-6 h-[85vh] max-h-[800px]">

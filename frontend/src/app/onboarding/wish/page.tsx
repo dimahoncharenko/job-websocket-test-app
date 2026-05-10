@@ -7,5 +7,12 @@ import Page from "@/modules/onboarding/pages/WishPage";
 export default function WishPage() {
   const router = useRouter();
 
-  return <Page onContinue={() => router.push("/onboarding/weight")} />;
+  return (
+    <Page
+      onContinue={() => {
+        sessionStorage.setItem("flow_step", "weight");
+        router.push("/onboarding/weight");
+      }}
+    />
+  );
 }

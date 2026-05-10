@@ -8,11 +8,11 @@ export type Status = "idle" | "queued" | "processing" | "done" | "failed";
 
 const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "";
 
-export const useJobRunner = (onReset: () => void) => {
+export const useJobRunner = (onReset: () => void, initialDone = false) => {
   const { setJobPhase } = useJobStatus();
   const [mode, setMode] = useState<Mode | null>(null);
-  const [status, setStatus] = useState<Status>("idle");
-  const [progress, setProgress] = useState(0);
+  const [status, setStatus] = useState<Status>(initialDone ? "done" : "idle");
+  const [progress, setProgress] = useState(initialDone ? 100 : 0);
   const [announcedLabel, setAnnouncedLabel] = useState("");
 
   const wsRef = useRef<WebSocket | null>(null);
@@ -83,7 +83,10 @@ export const useJobRunner = (onReset: () => void) => {
         if (msg.event === "job-progress") {
           if (msg.status) setStatus(msg.status);
           if (msg.progress !== undefined) setProgress(msg.progress);
-          if (msg.status === "done" || msg.status === "failed") {
+          if (msg.status === "done") {
+            sessionStorage.setItem("flow_step", "done");
+            ws.close();
+          } else if (msg.status === "failed") {
             ws.close();
           }
         } else if (msg.event === "error") {
@@ -134,7 +137,11 @@ export const useJobRunner = (onReset: () => void) => {
           setStatus(polled.status);
           setProgress(polled.progress);
 
-          if (polled.status === "done" || polled.status === "failed") {
+          if (polled.status === "done") {
+            sessionStorage.setItem("flow_step", "done");
+            clearInterval(pollRef.current!);
+            pollRef.current = null;
+          } else if (polled.status === "failed") {
             clearInterval(pollRef.current!);
             pollRef.current = null;
           }
